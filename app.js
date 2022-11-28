@@ -2,9 +2,9 @@ const express = require('express');
 const app = express(); 
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-
 require('dotenv/config');
-const api = '/api/v1';
+
+const api = process.env.API_URL;
 
 //middleware 
 app.use(express.json());
@@ -13,10 +13,7 @@ app.use(morgan('tiny'));
 const productSchema = mongoose.Schema({
     name: String,
     image: String,
-    countInStock: {
-        type: Number,
-        required: true
-    }
+    countInStock: Number
 })
 
 const Product = mongoose.model('Product', productSchema);
@@ -52,7 +49,7 @@ app.post(`${api}/products`, (req,res) =>{
     // console.log(newProduct);  
     // res.send(newProduct);
 } )
-const conn = 'mongodb+srv://mongomean:MongoMan123@mongomean.xccqhaf.mongodb.net/?retryWrites=true&w=majority';
+const conn = process.env.MONGO_CONN;
 mongoose.connect(conn,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
